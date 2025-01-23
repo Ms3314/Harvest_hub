@@ -3,11 +3,14 @@
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
-      "dev": "tsc -b && nodemon ./dist/server.js" 
+        "dev": "tsc -b && nodemon ./dist/server.js"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "description": ""
-  }
-  
+    "description": "",
+    "dependencies": {
+        "@types/ws": "^8.5.14",
+        "ws": "^8.18.0"
+    }
+}
