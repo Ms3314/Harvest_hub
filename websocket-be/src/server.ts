@@ -4,46 +4,57 @@ import { WebSocketServer } from 'ws';
 const app = express();
 const httpServer = app.listen(8080);
 
-let room: string[] = [];
+let rooms: { [roomName: string]: Set<any> } = {}; 
+// it stores in key value pair manner 
+
+// Stores rooms and their clients
+// set is very similiar to an array , its only difference it stores unique items 
+
 
 const wss = new WebSocketServer({ server: httpServer });
 
-wss.on('connection', function connection(ws) {
+wss.on('connection', (ws) => {
     ws.on('error', console.error);
 
-    ws.on('message', function message(data, isBinary) {
-        // Handle different data types
-        if (typeof data !== 'string') {
-            // @ts-expect-error
-            data = data.toString();
-        }
-
-        console.log('Received data:', data);
-
+    ws.on('message', (data, isBinary) => {
+        console.log('Received data type:', typeof data);
         try {
-            // @ts-expect-error
-            const payload = JSON.parse(data).payload;
+            // Convert Buffer to string if necessary
+            if (typeof data !== 'string') {
+                            // @ts-expect-error
+                data = data.toString();
+            }
 
+            console.log('Received data:', data);
+
+            // Parse the message and extract the payload
+                        // @ts-expect-error
+            const { payload } = JSON.parse(data);
             if (!payload || !payload.room) {
                 console.error('Invalid payload:', payload);
                 return;
             }
 
-            console.log('Parsed payload:', payload);
+            const { room } = payload;
+            console.log(`Client wants to join room: ${room}`);
+            
+            // Ensure the room exists in the `rooms` map
+            if (!rooms[room]) {
+                rooms[room] = new Set(); // Create a new room if it doesn't exist
+            }
 
-            wss.clients.forEach(function each(client) {
-                if (client.readyState === WebSocket.OPEN) {
-                    // Check if the room exists
-                    const res = room.find((r) => r === payload.room);
+            // Add the client to the room
+            rooms[room].add(ws);
+            console.log(`Rooms after join:`, rooms);
 
-                    if (res) {
-                        client.send(data, { binary: isBinary });
-                    }
-
-                    // Add room only if it doesn't exist
-                    if (!res) {
-                        room.push(payload.room);
-                    }
+            // Broadcast the message to all clients in the room
+            rooms[room].forEach((client) => {
+                // the client here is the web socket 
+                if (client.readyState === ws.OPEN) {
+                    if (client != ws ) 
+                        {
+                            client.send(payload.message , { binary: isBinary });
+                        }
                 }
             });
         } catch (error) {
@@ -51,5 +62,26 @@ wss.on('connection', function connection(ws) {
         }
     });
 
+    // Handle client disconnection
+    ws.on('close', () => {
+        console.log('Client disconnected');
+        // Remove the client from all rooms
+        for (const room in rooms) {
+            rooms[room].delete(ws);
+            // Delete the room if empty
+            if (rooms[room].size === 0) {
+                delete rooms[room];
+            }
+        }
+        console.log('Rooms after disconnect:', rooms);
+    });
+
     ws.send('Hello! Message From Server!!');
 });
+
+
+
+// PROBLEM : 
+// jan ye connect hora usko aak baar message karna padta taki iska room humein pata chale 
+
+// type main initialize rehna padta !! 
