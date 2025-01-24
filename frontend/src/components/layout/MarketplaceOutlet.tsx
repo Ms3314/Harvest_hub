@@ -3,12 +3,15 @@ import Navbar from '../layout/Navbar';
 
 const MarketplaceOutlet = () => {
   return (
-    <div>
+    <>
+    <Navbar />
+    <div className='flex flex-col justify-center items-center'>
         {/* the navbar  */}
-        <Navbar />
+        
         {/* the data that is nested */}
         <Outlet /> 
     </div>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import MarketplacePage from './components/marketplace/MarketplacePage';
 import InventoryPage from './components/inventory/InventoryPage';
 import Home from './Home';
 import MarketplaceOutlet from './components/layout/MarketplaceOutlet';
+import ChatRoom from './components/marketplace/Chat/ChatRoom';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route index   element={<MarketplacePage/>}/> 
           <Route path="sell" element={<div className="p-8">Sell page coming soon...</div>} />
           <Route path="purchases" element={<div className="p-8">Purchases page coming soon...</div>} />
+          <Route path={`chat/orgid/roomid`} element={<ChatRoom/>}    />
         </Route>
 
         {/* Inventory Page */}
