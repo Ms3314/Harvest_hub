@@ -11,6 +11,7 @@ model User {
   id             Int       @id @default(autoincrement())
   image          String?
   farmname       String
+  password       String
   email          String    @unique
   location       String?
   createdAt      DateTime  @default(now())
@@ -19,6 +20,7 @@ model User {
   message_buyer  Message[] @relation("buyer me")
   Products       Product[]
 }
+
 
 model Product {
   id         Int     @id @default(autoincrement())
