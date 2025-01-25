@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 // Middleware for token authentication
 export const authenticateToken = async (req:any, res:any, next:any) => {
+  console.log("authentication token is being run")
     try {
       // Step 1: Get the token from the Authorization header
       const {token} = req.body ;
@@ -20,6 +21,7 @@ export const authenticateToken = async (req:any, res:any, next:any) => {
                 // @ts-expect-error
                 const decoded = jwt.verify(token, process.env.SECRET_KEY); // Verify token integrity
                 // Step 3: Optionally validate the user in the database
+                // @ts-expect-error-decoded main dalna
                 const email = decoded?.email; // Assuming the JWT payload includes `email`
                 const result = await prisma.user.findUnique(email)
                 req.user = {

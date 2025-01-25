@@ -1,28 +1,30 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import Layout from './components/layout/Layout';
 import MarketplacePage from './components/marketplace/MarketplacePage';
 import InventoryPage from './components/inventory/InventoryPage';
-import Home from './Home';
+import SignIn from './components/authentication/SignIn';
+import SignUp from './components/authentication/SignUp';
 import MarketplaceOutlet from './components/layout/MarketplaceOutlet';
 import ChatRoom from './components/marketplace/Chat/ChatRoom';
+import SellComp from './components/marketplace/SellComp';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Home Route */}
-        <Route path="/" element={<Home />} />
-
         {/* Auth Routes */}
-        <Route path="/signin" element={<div className="p-8">Sign In Page</div>} />
-        <Route path="/signup" element={<div className="p-8">Sign Up Page</div>} />
+        <Route path="/" element={<Navigate to="/signin" replace />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
 
-        {/* Marketplace with Nested Routes */}
+        {/* Protected Routes */}
         <Route path="/marketplace" element={<MarketplaceOutlet />}>
-          <Route index   element={<MarketplacePage/>}/> 
-          <Route path="sell" element={<div className="p-8">Sell page coming soon...</div>} />
+          <Route index element={<MarketplacePage />} />
+          <Route path="sell" element={<SellComp/>} />
           <Route path="purchases" element={<div className="p-8">Purchases page coming soon...</div>} />
-          <Route path={`chat/orgid/roomid`} element={<ChatRoom/>}    />
+          <Route path={`chat/orgid/roomid`} element={<ChatRoom />} />
         </Route>
 
         {/* Inventory Page */}

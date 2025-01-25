@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'rest_framework',
+    'corsheaders' ,
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Add this line
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'inv_Django.urls'
@@ -138,3 +141,29 @@ JWT_SETTINGS = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
     'ALGORITHM': 'HS256',
 }
+# Allow all origins
+CORS_ALLOW_ALL_ORIGINS = True
+
+# Optional: Allow credentials if needed
+CORS_ALLOW_CREDENTIALS = True
+
+# Optional: Customize allowed HTTP methods (defaults to standard methods)
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
+# Optional: Customize allowed headers if needed
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization",
+    "x-csrftoken",
+    "accept",
+    "origin",
+    "user-agent",
+    "x-requested-with",
+]

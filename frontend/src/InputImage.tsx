@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FirebaseUpload } from "./hooks/firebase";
 
-function InputImage() {
+function InputImage({setImageUrl} : {setImageUrl : Dispatch<SetStateAction<string>>}) {
     const [imageUpload, setImageUpload] = useState<File | null>(null);
 
     async function useUploadImage() {
@@ -17,6 +17,7 @@ function InputImage() {
         
         if (url) {
             console.log("Image URL:", url);
+            setImageUrl(url)
         } else {
             console.log("Failed to upload image");
         }
