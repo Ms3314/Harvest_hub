@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\kaash\Desktop\Harvet Hub\Harvest_hub\myenv
+set VIRTUAL_ENV=C:\Users\kaash\Desktop\Harvest_hub\myenv
 
 if not defined PROMPT set PROMPT=$P$G
 
